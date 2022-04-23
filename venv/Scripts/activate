@@ -44,7 +44,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV='C:\Users\Yuliya.Khamidulina\PycharmProjects\Project_to_try_http\venv'
+VIRTUAL_ENV='C:\Users\Yuliya.Khamidulina\Desktop\нетология\python\! КурсРаб\1 КурсРаб Основы «Резервное копирование»\CourseProject_1\venv'
 if ([ "$OSTYPE" = "cygwin" ] || [ "$OSTYPE" = "msys" ]) && $(command -v cygpath &> /dev/null) ; then
     VIRTUAL_ENV=$(cygpath -u "$VIRTUAL_ENV")
 fi
