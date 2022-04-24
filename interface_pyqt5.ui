@@ -67,7 +67,7 @@ background-color: rgb(53, 0, 39);
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>200</y>
+      <y>240</y>
       <width>471</width>
       <height>23</height>
      </rect>
@@ -136,9 +136,9 @@ color: white;
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>260</y>
+      <y>300</y>
       <width>471</width>
-      <height>181</height>
+      <height>141</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -224,7 +224,7 @@ background-color: rgb(68,56,72);
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>230</y>
+       <y>270</y>
        <width>101</width>
        <height>20</height>
       </rect>
@@ -439,6 +439,25 @@ background-color: rgb(160, 95, 182)
      </property>
      <property name="text">
       <string>Запуск резервного копирования</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_stop_copy">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>200</y>
+       <width>471</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+border-radius: 10px;
+background-color: rgb(255, 0, 110);
+}</string>
+     </property>
+     <property name="text">
+      <string>Остановка резервного копирования</string>
      </property>
     </widget>
    </widget>

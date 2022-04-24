@@ -46,7 +46,7 @@ class Ui_MainWindow(object):
 "}")
         self.centralwidget.setObjectName("centralwidget")
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.progressBar.setGeometry(QtCore.QRect(30, 200, 471, 23))
+        self.progressBar.setGeometry(QtCore.QRect(30, 240, 471, 23))
         self.progressBar.setToolTipDuration(-1)
         self.progressBar.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.progressBar.setStyleSheet("QProgressBar{\n"
@@ -77,7 +77,7 @@ class Ui_MainWindow(object):
         self.lineEdit_page_id.setClearButtonEnabled(True)
         self.lineEdit_page_id.setObjectName("lineEdit_page_id")
         self.textEdit_report = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit_report.setGeometry(QtCore.QRect(30, 260, 471, 181))
+        self.textEdit_report.setGeometry(QtCore.QRect(30, 300, 471, 141))
         self.textEdit_report.setStyleSheet("QTextEdit{\n"
 "border-radius: 10px;\n"
 "color: white;\n"
@@ -106,7 +106,7 @@ class Ui_MainWindow(object):
         self.label_3.setGeometry(QtCore.QRect(30, 100, 171, 16))
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(self.frame)
-        self.label_4.setGeometry(QtCore.QRect(30, 230, 101, 20))
+        self.label_4.setGeometry(QtCore.QRect(30, 270, 101, 20))
         self.label_4.setObjectName("label_4")
         self.fill_settings = QtWidgets.QToolButton(self.frame)
         self.fill_settings.setGeometry(QtCore.QRect(410, 130, 24, 24))
@@ -182,6 +182,13 @@ class Ui_MainWindow(object):
 "background-color: rgb(160, 95, 182)\n"
 "}")
         self.pushButton_start_copy.setObjectName("pushButton_start_copy")
+        self.pushButton_stop_copy = QtWidgets.QPushButton(self.frame)
+        self.pushButton_stop_copy.setGeometry(QtCore.QRect(30, 200, 471, 28))
+        self.pushButton_stop_copy.setStyleSheet("QPushButton{\n"
+"border-radius: 10px;\n"
+"background-color: rgb(255, 0, 110);\n"
+"}")
+        self.pushButton_stop_copy.setObjectName("pushButton_stop_copy")
         self.frame.raise_()
         self.progressBar.raise_()
         self.lineEdit_page_id.raise_()
@@ -214,6 +221,7 @@ class Ui_MainWindow(object):
         self.clear_settings.setToolTip(_translate("MainWindow", "<html><head/><body><p>Очистить поля и очистить сохраненные настройки</p></body></html>"))
         self.label_5.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" color:#ffffff;\">Укажите токен для страницы:</span></p></body></html>"))
         self.pushButton_start_copy.setText(_translate("MainWindow", "Запуск резервного копирования"))
+        self.pushButton_stop_copy.setText(_translate("MainWindow", "Остановка резервного копирования"))
         self.menu_exit.setText(_translate("MainWindow", "Выход"))
         self.menu_exit.setShortcut(_translate("MainWindow", "Esc"))
         self.menu_clear_settings.setText(_translate("MainWindow", "Очистить настройки"))

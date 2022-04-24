@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90c69a7e-c6af-45a9-9124-477be8331e44" name="Changes" comment="Черновой GUI, наброски кода">
+    <list default="true" id="90c69a7e-c6af-45a9-9124-477be8331e44" name="Changes" comment="Красивый GUI, обработка очистки (имеет issue) + работа progressbar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/interface_pyqt5.py" beforeDir="false" afterPath="$PROJECT_DIR$/interface_pyqt5.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/interface_pyqt5.ui" beforeDir="false" afterPath="$PROJECT_DIR$/interface_pyqt5.ui" afterDir="false" />
@@ -68,7 +68,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650748279660</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Красивый GUI, обработка очистки (имеет issue) + работа progressbar">
+      <created>1650831899258</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1650831899258</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -84,6 +91,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Черновой GUI, наброски кода" />
-    <option name="LAST_COMMIT_MESSAGE" value="Черновой GUI, наброски кода" />
+    <MESSAGE value="Красивый GUI, обработка очистки (имеет issue) + работа progressbar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Красивый GUI, обработка очистки (имеет issue) + работа progressbar" />
   </component>
 </project>

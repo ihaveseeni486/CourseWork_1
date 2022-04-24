@@ -14,7 +14,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         # подключение к кнопкам
-        self.ui.pushButton_start_copy.clicked.connect(self.btnClicked)
+        self.ui.pushButton_start_copy.clicked.connect(self.btnClickedStartCopy)
+        self.ui.pushButton_stop_copy.clicked.connect(self.btnClickedStopCopy)
         self.ui.fill_settings.clicked.connect(self.fill_settings_pressed)
         self.ui.save_settings.clicked.connect(self.save_settings_pressed)
         self.ui.clear_settings.clicked.connect(self.clear_settings_pressed)
@@ -52,21 +53,62 @@ class MainWindow(QtWidgets.QMainWindow):
         time.sleep(time_to_sleep) # просто для красоты анимации прогрессбара, а то слишком быстро все делает =)
 
     def fill_settings_pressed(self):
-        self.ui.label_4.setText("Вы нажали на заполнение!")
-        self.ui.label_4.adjustSize()
+        self.ui.textEdit_report.setText("")
+        self.ui.textEdit_report.append("Запуск заполнения из предсохраненных настроек...")
+        self.ProgressBarSetValueAndColor(10, True, 0.5)
+
+        if os.path.exists("settings.ini"):
+            try:
+                self.ui.textEdit_report.append("Старт чтения файла настроек...")
+                self.ProgressBarSetValueAndColor(40, True, 0.5)
+                config = configparser.ConfigParser()
+                config.read("settings.ini")
+
+                self.ui.lineEdit_page_id.setText(config["VK"]["id"])
+                self.ui.lineEdit_token_id.setText(config["VK"]["token"])
+                self.ui.lineEdit_token.setText(config["YandexDisk"]["token"])
+
+                self.ui.textEdit_report.append("Настройки заполнены")
+                self.ProgressBarSetValueAndColor(100, True, 0)
+            except Exception as ex_mess:
+                self.ui.textEdit_report.append(f"Ошибка очистки файла настроек: {ex_mess}")
+                self.ProgressBarSetValueAndColor(100, False, 0)
+        else:
+            self.ui.textEdit_report.append("Предсохраненных настроек не обнаружено")
+            self.ui.textEdit_report.append("Настройки не загружены")
+            self.ProgressBarSetValueAndColor(100, False, 0)
 
     def save_settings_pressed(self):
-        self.ui.label_4.setText("Вы нажали на сохранение!")
-        self.ui.label_4.adjustSize()
+        self.ui.textEdit_report.setText("")
+        self.ProgressBarSetValueAndColor(0, True, 0.05)
+        self.ui.textEdit_report.append("Запуск сохранения настроек...")
+        self.ProgressBarSetValueAndColor(30, True, 0.05)
+
+        try:
+            self.ProgressBarSetValueAndColor(40, True, 0.05)
+            config = configparser.ConfigParser()
+            config.add_section("VK")
+            config.add_section("YandexDisk")
+            config.set("VK", "id", self.ui.lineEdit_page_id.text())
+            config.set("VK", "token", self.ui.lineEdit_token_id.text())
+            config.set("YandexDisk", "token", self.ui.lineEdit_token.text())
+
+            self.ProgressBarSetValueAndColor(70, True, 0.5)
+            with open('settings.ini', 'w') as configfile:
+                config.write(configfile)
+
+            self.ui.textEdit_report.append("Настройки сохранены")
+            self.ProgressBarSetValueAndColor(100, True, 0)
+        except Exception as ex_mess:
+            self.ui.textEdit_report.append(f"Ошибка обновления файла настроек: {ex_mess}")
+            self.ProgressBarSetValueAndColor(100, False, 0)
 
     def clear_settings_pressed(self):
         self.ui.textEdit_report.setText("")
         self.ProgressBarSetValueAndColor(0, True, 0.05)
         self.ui.textEdit_report.append("Запуск очистки сохраненных настроек...")
         self.ui.lineEdit_page_id.setText("")
-        self.ProgressBarSetValueAndColor(10, True, 0.05)
         self.ui.lineEdit_token.setText("")
-        self.ProgressBarSetValueAndColor(20, True, 0.05)
         self.ui.lineEdit_token_id.setText("")
         self.ProgressBarSetValueAndColor(30, True, 0.05)
 
@@ -76,9 +118,11 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.ProgressBarSetValueAndColor(40, True, 0.05)
                 config = configparser.ConfigParser()
                 config.read("settings.ini")
+                config["VK"]["id"] = ""
                 config["VK"]["token"] = ""
                 config["YandexDisk"]["token"] = ""
-                config.write(config)
+                with open('settings.ini', 'w') as configfile:
+                    config.write(configfile)
                 self.ui.textEdit_report.append("Настройки очищены")
                 self.ProgressBarSetValueAndColor(100, True, 0)
             except Exception as ex_mess:
@@ -92,9 +136,13 @@ class MainWindow(QtWidgets.QMainWindow):
     # def menu_exit_pressed(self):
     #    self.close()
 
-    def btnClicked(self):
+    def btnClickedStartCopy(self):
         self.ui.label_4.setText("Вы нажали на кнопку!")
         # Если не использовать, то часть текста исчезнет.
+        self.ui.label_4.adjustSize()
+
+    def btnClickedStopCopy(self):
+        self.ui.label_4.setText("Вы нажали на кнопку АСТАНАВИТЕСЬ!")
         self.ui.label_4.adjustSize()
 
 
