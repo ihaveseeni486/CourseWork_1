@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90c69a7e-c6af-45a9-9124-477be8331e44" name="Changes" comment="Красивый GUI, обработка очистки (имеет issue) + работа progressbar">
+    <list default="true" id="90c69a7e-c6af-45a9-9124-477be8331e44" name="Changes" comment="Фикс issue обработка очистки&#10;Обработка кнопок работы с файлом настройки">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/interface_pyqt5.py" beforeDir="false" afterPath="$PROJECT_DIR$/interface_pyqt5.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/interface_pyqt5.ui" beforeDir="false" afterPath="$PROJECT_DIR$/interface_pyqt5.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/venv/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +74,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650831899258</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Фикс issue обработка очистки&#10;Обработка кнопок работы с файлом настройки">
+      <created>1650834294701</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1650834294701</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -92,6 +98,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Черновой GUI, наброски кода" />
     <MESSAGE value="Красивый GUI, обработка очистки (имеет issue) + работа progressbar" />
-    <option name="LAST_COMMIT_MESSAGE" value="Красивый GUI, обработка очистки (имеет issue) + работа progressbar" />
+    <MESSAGE value="Фикс issue обработка очистки&#10;Обработка кнопок работы с файлом настройки" />
+    <option name="LAST_COMMIT_MESSAGE" value="Фикс issue обработка очистки&#10;Обработка кнопок работы с файлом настройки" />
   </component>
 </project>

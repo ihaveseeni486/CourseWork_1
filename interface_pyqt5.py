@@ -177,6 +177,7 @@ class Ui_MainWindow(object):
         self.lineEdit_token.setObjectName("lineEdit_token")
         self.pushButton_start_copy = QtWidgets.QPushButton(self.frame)
         self.pushButton_start_copy.setGeometry(QtCore.QRect(30, 160, 471, 28))
+        self.pushButton_start_copy.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_start_copy.setStyleSheet("QPushButton{\n"
 "border-radius: 10px;\n"
 "background-color: rgb(160, 95, 182)\n"
@@ -184,6 +185,7 @@ class Ui_MainWindow(object):
         self.pushButton_start_copy.setObjectName("pushButton_start_copy")
         self.pushButton_stop_copy = QtWidgets.QPushButton(self.frame)
         self.pushButton_stop_copy.setGeometry(QtCore.QRect(30, 200, 471, 28))
+        self.pushButton_stop_copy.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_stop_copy.setStyleSheet("QPushButton{\n"
 "border-radius: 10px;\n"
 "background-color: rgb(255, 0, 110);\n"
