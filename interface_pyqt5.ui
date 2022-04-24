@@ -25,34 +25,75 @@
   <property name="windowTitle">
    <string>Курсовой проект «Резервное копирование»</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="files.qrc">
+    <normaloff>:/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg</normaloff>
+    <normalon>:/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg</normalon>
+    <disabledoff>:/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg</disabledoff>
+    <disabledon>:/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg</disabledon>
+    <activeoff>:/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg</activeoff>
+    <activeon>:/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg</activeon>
+    <selectedoff>:/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg</selectedoff>
+    <selectedon>:/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg</selectedon>:/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg</iconset>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+	color: white;
+	background-color: #121212;
+	border-radius: 10px;
+}
+QMainWindow {
+	background-color: #121212;
+	border-radius: 10px;
+}</string>
+  </property>
   <property name="documentMode">
    <bool>false</bool>
   </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton_start_copy">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>100</y>
-      <width>471</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Запуск резервного копирования</string>
-    </property>
-   </widget>
+   <property name="styleSheet">
+    <string notr="true">QWidget{
+border-radius: 10px;
+background-color: rgb(53, 0, 39);
+}</string>
+   </property>
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>140</y>
+      <y>200</y>
       <width>471</width>
       <height>23</height>
      </rect>
     </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QProgressBar{
+background_color: rgb(124,113,116);
+border-radius: 10px;
+color: white;
+}
+QProgressBar::chunk{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(201, 87, 149, 255), stop:1 rgba(179, 65, 244, 255));
+border-radius: 10px;
+}</string>
+    </property>
     <property name="value">
      <number>0</number>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_page_id">
@@ -64,121 +105,347 @@
       <height>22</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_token">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>70</y>
-      <width>281</width>
-      <height>22</height>
-     </rect>
+    <property name="font">
+     <font>
+      <kerning>true</kerning>
+     </font>
     </property>
-    <property name="inputMethodHints">
-     <set>Qt::ImhHiddenText</set>
+    <property name="tabletTracking">
+     <bool>true</bool>
     </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>10</y>
-      <width>361</width>
-      <height>16</height>
-     </rect>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit{
+border-radius: 10px;
+color: white;
+}</string>
     </property>
-    <property name="text">
-     <string>Резервное копирование фотографий из профиля VKontakte</string>
+    <property name="frame">
+     <bool>true</bool>
     </property>
-    <property name="textFormat">
-     <enum>Qt::AutoText</enum>
+    <property name="cursorPosition">
+     <number>0</number>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QTextEdit" name="textEdit_report">
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>40</y>
-      <width>131</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Укажите id страницы:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>70</y>
-      <width>171</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Укажите токен для Я.Диска:</string>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit_report">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>210</y>
+      <y>260</y>
       <width>471</width>
-      <height>191</height>
+      <height>181</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QTextEdit{
+border-radius: 10px;
+color: white;
+}</string>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>180</y>
-      <width>101</width>
-      <height>20</height>
+      <x>0</x>
+      <y>0</y>
+      <width>531</width>
+      <height>471</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Ход выполнения:</string>
+    <property name="styleSheet">
+     <string notr="true">QFrame{
+border-radius: 10px;
+background-color: rgb(68,56,72);
+}</string>
     </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>10</y>
+       <width>401</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;Резервное копирование фотографий из профиля VKontakte&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::AutoText</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>131</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Укажите id страницы:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>100</y>
+       <width>171</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Укажите токен для Я.Диска:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>230</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Ход выполнения:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="fill_settings">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>130</y>
+       <width>24</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Загрузить сохраненные настройки</string>
+     </property>
+     <property name="accessibleDescription">
+      <string/>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton{
+background-color: rgb(160, 95, 182)
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="files.qrc">
+       <normaloff>:/icons/icons/arrow_circle_right_FILL0_wght400_GRAD200_opsz24.svg</normaloff>:/icons/icons/arrow_circle_right_FILL0_wght400_GRAD200_opsz24.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="shortcut">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="save_settings">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>130</y>
+       <width>24</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Сохранить введенные настройки</string>
+     </property>
+     <property name="accessibleDescription">
+      <string/>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton{
+background-color: rgb(160, 95, 182)
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="files.qrc">
+       <normaloff>:/icons/icons/add_task_FILL0_wght400_GRAD200_opsz24.svg</normaloff>:/icons/icons/add_task_FILL0_wght400_GRAD200_opsz24.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="clear_settings">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>130</y>
+       <width>24</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Очистить поля и очистить сохраненные настройки&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="accessibleName">
+      <string/>
+     </property>
+     <property name="accessibleDescription">
+      <string/>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton{
+background-color: rgb(160, 95, 182)
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="files.qrc">
+       <normaloff>:/icons/icons/cancel_FILL0_wght400_GRAD200_opsz24.svg</normaloff>:/icons/icons/cancel_FILL0_wght400_GRAD200_opsz24.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>70</y>
+       <width>181</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Укажите токен для страницы:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_token_id">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>70</y>
+       <width>281</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+border-radius: 10px;
+color: white;
+}</string>
+     </property>
+     <property name="inputMethodHints">
+      <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_token">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>100</y>
+       <width>281</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+border-radius: 10px;
+color: white;
+}</string>
+     </property>
+     <property name="inputMethodHints">
+      <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_start_copy">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>160</y>
+       <width>471</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+border-radius: 10px;
+background-color: rgb(160, 95, 182)
+}</string>
+     </property>
+     <property name="text">
+      <string>Запуск резервного копирования</string>
+     </property>
+    </widget>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>530</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="nativeMenuBar">
-    <bool>true</bool>
-   </property>
-   <widget class="QMenu" name="menu">
-    <property name="title">
-     <string>Главное меню</string>
-    </property>
-    <property name="toolTipsVisible">
-     <bool>false</bool>
-    </property>
-    <addaction name="menu_fill_settings"/>
-    <addaction name="menu_save_settings"/>
-    <addaction name="separator"/>
-    <addaction name="menu_clear_settings"/>
-    <addaction name="separator"/>
-    <addaction name="menu_exit"/>
-   </widget>
-   <addaction name="menu"/>
-  </widget>
-  <widget class="QStatusBar" name="statusbar">
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="sizeGripEnabled">
-    <bool>true</bool>
-   </property>
+   <zorder>frame</zorder>
+   <zorder>progressBar</zorder>
+   <zorder>lineEdit_page_id</zorder>
+   <zorder>textEdit_report</zorder>
   </widget>
   <action name="menu_exit">
    <property name="text">
@@ -186,6 +453,9 @@
    </property>
    <property name="shortcut">
     <string>Esc</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
    </property>
   </action>
   <action name="menu_clear_settings">
@@ -214,8 +484,13 @@
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::ApplicationSpecificRole</enum>
+   </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="files.qrc"/>
+ </resources>
  <connections/>
 </ui>
