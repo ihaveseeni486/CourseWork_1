@@ -1,4 +1,5 @@
 import YaDisk  # самописно для работы с Я.диском
+import VKwork  # самописно для работы с vk
 from interface_pyqt5 import Ui_MainWindow   # самописно для создания графического интерфейса
 from PyQt5 import QtWidgets, QtCore
 import configparser
@@ -16,7 +17,12 @@ class ProgressHandler(QtCore.QThread):
         self.token_for_disk = token_for_disk
 
     def run(self):
-        self.my_signal.emit(24, True, 0, "Проверка токена для соединения с Я.диском...")
+        self.my_signal.emit(12, True, 0, "Проверка данных для соединения с VK...")
+        vk_user_try = VKwork.VkStuff(token=self.token_id, user_id=self.page_id)
+        vk_resp = vk_user_try.get_user()
+        self.my_signal.emit(22, True, 0, f"Что-то там получилось {vk_resp}")
+
+        self.my_signal.emit(38, True, 0, "Проверка токена для соединения с Я.диском...")
         ya = YaDisk.YandexDisk(token=self.token_for_disk)
         self.my_signal.emit(40, True, 0, "Верификация пройдена")
         self.my_signal.emit(43, True, 0, "Запуск загрузки файла...")
