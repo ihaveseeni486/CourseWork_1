@@ -2,10 +2,8 @@ import YaDisk  # самописно для работы с Я.диском
 from interface_pyqt5 import Ui_MainWindow   # самописно для создания графического интерфейса
 from PyQt5 import QtWidgets, QtCore
 import configparser
-import threading
 import os
 import sys
-import time
 
 
 class ProgressHandler(QtCore.QThread):
@@ -22,7 +20,7 @@ class ProgressHandler(QtCore.QThread):
         ya = YaDisk.YandexDisk(token=self.token_for_disk)
         self.my_signal.emit(40, True, 0, "Верификация пройдена")
         self.my_signal.emit(43, True, 0, "Запуск загрузки файла...")
-        resp = ya.upload_file_to_disk("test/filemini.txt", "filemini.txt")
+        resp = ya.upload_file_to_disk("test", "filemini.txt")
         if resp == "":
             self.my_signal.emit(100, True, 0, "Успешно загружен файл на диск")
         else:

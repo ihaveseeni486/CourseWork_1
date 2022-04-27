@@ -19,15 +19,23 @@ class YandexDisk:
         resp = requests.get(url_files, headers=headers, verify=False)
         return resp.json()
 
-    def get_upload_link(self, file_path_disk):
-        url = 'https://cloud-api.yandex.net/v1/disk/resources/upload/'
+    def get_upload_link(self, file_path_folder, file_name):
         headers = self.get_headers()
-        param = {'path': file_path_disk, 'owerwrite': 'true'}
+        param = {'path': f"{file_path_folder}", 'owerwrite': 'true'}
+
+        # создадим папку
+        url = 'https://cloud-api.yandex.net/v1/disk/resources/'
+        resp = requests.put(url, headers=headers, params=param, verify=False)
+
+        # загрузим файл
+        url = 'https://cloud-api.yandex.net/v1/disk/resources/upload/'
+        all_path = f"{file_path_folder}/{file_name}"
+        param = {'path': all_path, 'owerwrite': 'true'}
         resp = requests.get(url, headers=headers, params=param, verify=False)
         return resp.json()
 
-    def upload_file_to_disk(self, file_path_disk, file_name):
-        ahref_json = self.get_upload_link(file_path_disk)
+    def upload_file_to_disk(self, file_path_folder, file_name):
+        ahref_json = self.get_upload_link(file_path_folder, file_name)
         ahref = ahref_json.get("href")
         if ahref != 0 and ahref is not None:
             resp = requests.put(ahref, data=open(file_name, 'rb'), verify=False)
