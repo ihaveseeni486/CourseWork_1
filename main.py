@@ -2,6 +2,7 @@ import YaDisk  # самописно для работы с Я.диском
 from interface_pyqt5 import Ui_MainWindow   # самописно для создания графического интерфейса
 from PyQt5 import QtWidgets, QtCore
 import configparser
+import threading
 import os
 import sys
 import time
@@ -10,13 +11,23 @@ import time
 class ProgressHandler(QtCore.QThread):
     my_signal = QtCore.pyqtSignal(int, bool, float, str)
 
-    def run(self):
-        # step = 20
-        # time_to_sleep = 0
-        # self.my_signal.emit(step, True, time_to_sleep, "")
+    def __init__(self, page_id, token_id, token_for_disk):
+        super().__init__()
+        self.page_id = page_id
+        self.token_id = token_id
+        self.token_for_disk = token_for_disk
 
-        for step in range(101):
-            self.my_signal.emit(step, True, 0.03, "")
+    def run(self):
+        self.my_signal.emit(24, True, 0, "Проверка токена для соединения с Я.диском...")
+        ya = YaDisk.YandexDisk(token=self.token_for_disk)
+        self.my_signal.emit(40, True, 0, "Верификация пройдена")
+        self.my_signal.emit(43, True, 0, "Запуск загрузки файла...")
+        resp = ya.upload_file_to_disk("test/filemini.txt", "filemini.txt")
+        if resp == "":
+            self.my_signal.emit(100, True, 0, "Успешно загружен файл на диск")
+        else:
+            self.my_signal.emit(100, False, 0, f"Ошибка при загрузке файла на диск:\r"
+                                               f"    {resp}")
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -25,13 +36,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.handler = ProgressHandler()
+        self.handler = ProgressHandler("", "", "")
         self.handler.my_signal.connect(self.progressbar_set_value_and_color)
 
         # подключение к кнопкам
-        # self.ui.pushButton_start_copy.clicked.connect(self.btnClickedStartCopy)
-        self.ui.pushButton_start_copy.clicked.connect(lambda: self.handler.start())
-        self.ui.pushButton_stop_copy.clicked.connect(lambda: self.handler.terminate())
+        self.ui.pushButton_start_copy.clicked.connect(self.btnClickedStartCopy)
+        self.ui.pushButton_stop_copy.clicked.connect(self.btnClickedStopCopy)
+
+        # self.ui.pushButton_start_copy.clicked.connect(lambda: self.handler.start())
+        # self.ui.pushButton_stop_copy.clicked.connect(lambda: self.handler_copy.terminate())
 
         self.ui.fill_settings.clicked.connect(self.fill_settings_pressed)
         self.ui.save_settings.clicked.connect(self.save_settings_pressed)
@@ -71,14 +84,20 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.textEdit_report.setText("")
         else:
             self.ui.textEdit_report.append(what_to_post)
-        if time_to_sleep != 0:
-            time.sleep(time_to_sleep) # просто для красоты анимации прогрессбара, а то слишком быстро все делает =)
+        if value == 100:
+            self.ui.pushButton_start_copy.setEnabled(True)
+        # if time_to_sleep != 0:
+            # time.sleep(time_to_sleep) # просто для красоты анимации прогрессбара, а то слишком быстро все делает =)
+            # переводим в миллисекунды
+            # time_to_sleep *= 1000
+            # self.handler.wait(int(time_to_sleep))
 
     def fill_settings_pressed(self):
         self.progressbar_set_value_and_color(0, True, 0, "")
         self.progressbar_set_value_and_color(10, True, 0.5, "Запуск заполнения из предсохраненных настроек...")
 
-        if os.path.exists("settings.ini"):
+        path_to_check = os.path.abspath("settings.ini")
+        if os.path.isfile(path_to_check):
             try:
                 self.progressbar_set_value_and_color(40, True, 0.5, "Старт чтения файла настроек...")
                 config = configparser.ConfigParser()
@@ -90,10 +109,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 self.progressbar_set_value_and_color(100, True, 0, "Настройки заполнены")
             except Exception as ex_mess:
-                self.progressbar_set_value_and_color(100, False, 0, f"Ошибка очистки файла настроек: {ex_mess}")
+                self.progressbar_set_value_and_color(100, False, 0, f"Ошибка считывания файла настроек: {ex_mess}")
         else:
             self.progressbar_set_value_and_color(100, False, 0,
-                                             "Предсохраненных настроек не обнаружено\nНастройки не загружены")
+                                                 "Предсохраненных настроек не обнаружено\nНастройки не загружены")
 
     def save_settings_pressed(self):
         self.progressbar_set_value_and_color(0, True, 0, "")
@@ -122,7 +141,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.lineEdit_token_id.setText("")
         self.progressbar_set_value_and_color(30, True, 0.05, "Запуск очистки сохраненных настроек...")
 
-        if os.path.exists("settings.ini"):
+        if os.path.isfile(os.getcwd() + "settings.ini"):
             try:
                 self.progressbar_set_value_and_color(40, True, 0.05, "Старт очистки файла настроек...")
                 config = configparser.ConfigParser()
@@ -142,13 +161,36 @@ class MainWindow(QtWidgets.QMainWindow):
     #    self.close()
 
     def btnClickedStartCopy(self):
-        self.ui.label_4.setText("Вы нажали на кнопку!")
-        # Если не использовать, то часть текста исчезнет.
-        self.ui.label_4.adjustSize()
+        self.progressbar_set_value_and_color(0, True, 0, "")
+        self.progressbar_set_value_and_color(10, True, 0.5, "Проверка параметров для запуска резервного копирования...")
+
+        lineEdit_page_id = self.ui.lineEdit_page_id.text()
+        lineEdit_token_id = self.ui.lineEdit_token_id.text()
+        lineEdit_token = self.ui.lineEdit_token.text()
+        if lineEdit_page_id != "" and lineEdit_token_id != "" and lineEdit_token != "":
+            self.progressbar_set_value_and_color(20, True, 0, "Запуск резервного копирования...")
+            self.ui.pushButton_start_copy.setEnabled(False)
+            self.handler = ProgressHandler(lineEdit_page_id, lineEdit_token_id, lineEdit_token)
+            self.handler.my_signal.connect(self.progressbar_set_value_and_color)
+            self.handler.start()
+        else:
+            self.progressbar_set_value_and_color(100, False, 0, "Поля с входными данными не могут быть пустыми.")
 
     def btnClickedStopCopy(self):
-        self.ui.label_4.setText("Вы нажали на кнопку АСТАНАВИТЕСЬ!")
-        self.ui.label_4.adjustSize()
+        try:
+            if self.handler.isRunning():
+                self.progressbar_set_value_and_color(98, False, 0, "\nОстановка процесса резервного копирования...")
+                self.handler.terminate()
+                if not self.handler.isRunning():
+                    self.progressbar_set_value_and_color(100, True, 0,
+                                                     "Процесс резервного копирования прерван по инициативе пользователя")
+                else:
+                    self.progressbar_set_value_and_color(100, False, 0,
+                                                         "Процесс резервного копирования ПОЧЕМУ-ТО НЕ ПРЕРВАН")
+            else:
+                self.progressbar_set_value_and_color(0, True, 0, "Процесс не запущен, нечего останавливать")
+        except Exception as exc:
+            self.progressbar_set_value_and_color(100, False, 0, f"Непредвиденная ошибка: {exc}")
 
 
 if __name__ == '__main__':
@@ -158,15 +200,3 @@ if __name__ == '__main__':
     application.show()
 
     sys.exit(app.exec())
-
-    # config = configparser.ConfigParser()
-    # config.read("settings.ini")
-    # token_for_vk = config["VK"]["token"]
-    # token_for_disk = config["YandexDisk"]["token"]
-    #
-    # ya = YaDisk.YandexDisk(token=token_for_disk)
-    # resp = ya.upload_file_to_disk("test/filemini.txt", "filemini.txt")
-    # if resp:
-    #     print("Успешно загружен файл на диск")
-    # else:
-    #     print("Ошибка при загрузке файла на диск")

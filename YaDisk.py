@@ -29,12 +29,12 @@ class YandexDisk:
     def upload_file_to_disk(self, file_path_disk, file_name):
         ahref_json = self.get_upload_link(file_path_disk)
         ahref = ahref_json.get("href")
-        if ahref != 0:
+        if ahref != 0 and ahref is not None:
             resp = requests.put(ahref, data=open(file_name, 'rb'), verify=False)
             resp.raise_for_status()
             if resp.status_code == 201:
-                return True
+                return ""
             else:
-                return False
+                return f"{resp.status_code}: {resp.reason}"
         else:
-            return False
+            return f'{ahref_json.get("message")}'
