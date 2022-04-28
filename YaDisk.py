@@ -1,10 +1,12 @@
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
 class YandexDisk:
 
     def __init__(self, token):
         self.token = token
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     def get_headers(self):
         return {

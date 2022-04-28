@@ -1,3 +1,5 @@
+import time
+
 import YaDisk  # самописно для работы с Я.диском
 import VKwork  # самописно для работы с vk
 from interface_pyqt5 import Ui_MainWindow   # самописно для создания графического интерфейса
@@ -8,29 +10,34 @@ import sys
 
 
 class ProgressHandler(QtCore.QThread):
-    my_signal = QtCore.pyqtSignal(int, bool, float, str)
+    my_signal = QtCore.pyqtSignal(int, bool, str)
 
     def __init__(self, page_id, token_id, token_for_disk):
         super().__init__()
         self.page_id = page_id
         self.token_id = token_id
         self.token_for_disk = token_for_disk
+        self.daemon = True
 
     def run(self):
-        self.my_signal.emit(12, True, 0, "Проверка данных для соединения с VK...")
+        self.my_signal.emit(12, True, "Проверка данных для соединения с VK...")
         vk_user_try = VKwork.VkStuff(token=self.token_id, user_id=self.page_id)
         vk_resp = vk_user_try.get_user()
-        self.my_signal.emit(22, True, 0, f"Что-то там получилось {vk_resp}")
+        if vk_resp == "Пользователь VK с введенными данными найден":
+            self.my_signal.emit(22, True, vk_resp)
+        else:
+            self.my_signal.emit(100, False, vk_resp)
+            return
 
-        self.my_signal.emit(38, True, 0, "Проверка токена для соединения с Я.диском...")
+        self.my_signal.emit(38, True, "Проверка токена для соединения с Я.диском...")
         ya = YaDisk.YandexDisk(token=self.token_for_disk)
-        self.my_signal.emit(40, True, 0, "Верификация пройдена")
-        self.my_signal.emit(43, True, 0, "Запуск загрузки файла...")
+        self.my_signal.emit(40, True, "Верификация пройдена")
+        self.my_signal.emit(43, True, "Запуск загрузки файла...")
         resp = ya.upload_file_to_disk("test", "filemini.txt")
         if resp == "":
-            self.my_signal.emit(100, True, 0, "Успешно загружен файл на диск")
+            self.my_signal.emit(100, True, "Успешно загружен файл на диск")
         else:
-            self.my_signal.emit(100, False, 0, f"Ошибка при загрузке файла на диск:\r"
+            self.my_signal.emit(100, False, f"Ошибка при загрузке файла на диск:\r"
                                                f"    {resp}")
 
 
@@ -54,7 +61,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.save_settings.clicked.connect(self.save_settings_pressed)
         self.ui.clear_settings.clicked.connect(self.clear_settings_pressed)
 
-    def progressbar_set_value_and_color(self, value, color_not_failed, time_to_sleep, what_to_post):
+    def progressbar_set_value_and_color(self, value, color_not_failed, what_to_post):
         self.ui.progressBar.setValue(value)
         if color_not_failed:
             # вернем цвет прогрессбару
@@ -90,20 +97,15 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.textEdit_report.append(what_to_post)
         if value == 100:
             self.ui.pushButton_start_copy.setEnabled(True)
-        # if time_to_sleep != 0:
-            # time.sleep(time_to_sleep) # просто для красоты анимации прогрессбара, а то слишком быстро все делает =)
-            # переводим в миллисекунды
-            # time_to_sleep *= 1000
-            # self.handler.wait(int(time_to_sleep))
 
     def fill_settings_pressed(self):
-        self.progressbar_set_value_and_color(0, True, 0, "")
-        self.progressbar_set_value_and_color(10, True, 0.5, "Запуск заполнения из предсохраненных настроек...")
+        self.progressbar_set_value_and_color(0, True, "")
+        self.progressbar_set_value_and_color(10, True, "Запуск заполнения из предсохраненных настроек...")
 
         path_to_check = os.path.abspath("settings.ini")
         if os.path.isfile(path_to_check):
             try:
-                self.progressbar_set_value_and_color(40, True, 0.5, "Старт чтения файла настроек...")
+                self.progressbar_set_value_and_color(40, True, "Старт чтения файла настроек...")
                 config = configparser.ConfigParser()
                 config.read("settings.ini")
 
@@ -111,16 +113,16 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.ui.lineEdit_token_id.setText(config["VK"]["token"])
                 self.ui.lineEdit_token.setText(config["YandexDisk"]["token"])
 
-                self.progressbar_set_value_and_color(100, True, 0, "Настройки заполнены")
+                self.progressbar_set_value_and_color(100, True, "Настройки заполнены")
             except Exception as ex_mess:
-                self.progressbar_set_value_and_color(100, False, 0, f"Ошибка считывания файла настроек: {ex_mess}")
+                self.progressbar_set_value_and_color(100, False, f"Ошибка считывания файла настроек: {ex_mess}")
         else:
-            self.progressbar_set_value_and_color(100, False, 0,
+            self.progressbar_set_value_and_color(100, False,
                                                  "Предсохраненных настроек не обнаружено\nНастройки не загружены")
 
     def save_settings_pressed(self):
-        self.progressbar_set_value_and_color(0, True, 0, "")
-        self.progressbar_set_value_and_color(40, True, 0.05, "Запуск сохранения настроек...")
+        self.progressbar_set_value_and_color(0, True, "")
+        self.progressbar_set_value_and_color(40, True, "Запуск сохранения настроек...")
 
         try:
             config = configparser.ConfigParser()
@@ -130,24 +132,24 @@ class MainWindow(QtWidgets.QMainWindow):
             config.set("VK", "token", self.ui.lineEdit_token_id.text())
             config.set("YandexDisk", "token", self.ui.lineEdit_token.text())
 
-            self.progressbar_set_value_and_color(70, True, 0.5, "Сохранение settings.ini")
+            self.progressbar_set_value_and_color(70, True, "Сохранение settings.ini")
             with open('settings.ini', 'w') as configfile:
                 config.write(configfile)
 
-            self.progressbar_set_value_and_color(100, True, 0, "Настройки сохранены")
+            self.progressbar_set_value_and_color(100, True, "Настройки сохранены")
         except Exception as ex_mess:
-            self.progressbar_set_value_and_color(100, False, 0, f"Ошибка обновления файла настроек: {ex_mess}")
+            self.progressbar_set_value_and_color(100, False, f"Ошибка обновления файла настроек: {ex_mess}")
 
     def clear_settings_pressed(self):
-        self.progressbar_set_value_and_color(0, True, 0.05, "")
+        self.progressbar_set_value_and_color(0, True, "")
         self.ui.lineEdit_page_id.setText("")
         self.ui.lineEdit_token.setText("")
         self.ui.lineEdit_token_id.setText("")
-        self.progressbar_set_value_and_color(30, True, 0.05, "Запуск очистки сохраненных настроек...")
+        self.progressbar_set_value_and_color(30, True, "Запуск очистки сохраненных настроек...")
 
         if os.path.isfile(os.getcwd() + "settings.ini"):
             try:
-                self.progressbar_set_value_and_color(40, True, 0.05, "Старт очистки файла настроек...")
+                self.progressbar_set_value_and_color(40, True, "Старт очистки файла настроек...")
                 config = configparser.ConfigParser()
                 config.read("settings.ini")
                 config["VK"]["id"] = ""
@@ -155,46 +157,46 @@ class MainWindow(QtWidgets.QMainWindow):
                 config["YandexDisk"]["token"] = ""
                 with open('settings.ini', 'w') as configfile:
                     config.write(configfile)
-                self.progressbar_set_value_and_color(100, True, 0, "Настройки очищены")
+                self.progressbar_set_value_and_color(100, True, "Настройки очищены")
             except Exception as ex_mess:
-                self.progressbar_set_value_and_color(100, False, 0, f"Ошибка очистки файла настроек: {ex_mess}")
+                self.progressbar_set_value_and_color(100, False, f"Ошибка очистки файла настроек: {ex_mess}")
         else:
-            self.progressbar_set_value_and_color(100, True, 0, "Предсохраненных настроек не обнаружено\rНастройки очищены")
+            self.progressbar_set_value_and_color(100, True, "Предсохраненных настроек не обнаружено\rНастройки очищены")
 
     # def menu_exit_pressed(self):
     #    self.close()
 
     def btnClickedStartCopy(self):
-        self.progressbar_set_value_and_color(0, True, 0, "")
-        self.progressbar_set_value_and_color(10, True, 0.5, "Проверка параметров для запуска резервного копирования...")
+        self.progressbar_set_value_and_color(0, True, "")
+        self.progressbar_set_value_and_color(10, True, "Проверка параметров для запуска резервного копирования...")
 
         lineEdit_page_id = self.ui.lineEdit_page_id.text()
         lineEdit_token_id = self.ui.lineEdit_token_id.text()
         lineEdit_token = self.ui.lineEdit_token.text()
         if lineEdit_page_id != "" and lineEdit_token_id != "" and lineEdit_token != "":
-            self.progressbar_set_value_and_color(20, True, 0, "Запуск резервного копирования...")
+            self.progressbar_set_value_and_color(20, True, "Входные данные заполнены, проверка корректности...")
             self.ui.pushButton_start_copy.setEnabled(False)
             self.handler = ProgressHandler(lineEdit_page_id, lineEdit_token_id, lineEdit_token)
             self.handler.my_signal.connect(self.progressbar_set_value_and_color)
             self.handler.start()
         else:
-            self.progressbar_set_value_and_color(100, False, 0, "Поля с входными данными не могут быть пустыми.")
+            self.progressbar_set_value_and_color(100, False, "Поля с входными данными не могут быть пустыми.")
 
     def btnClickedStopCopy(self):
         try:
             if self.handler.isRunning():
-                self.progressbar_set_value_and_color(98, False, 0, "\nОстановка процесса резервного копирования...")
+                self.progressbar_set_value_and_color(98, False, "\nОстановка процесса резервного копирования...")
                 self.handler.terminate()
                 if not self.handler.isRunning():
-                    self.progressbar_set_value_and_color(100, True, 0,
+                    self.progressbar_set_value_and_color(100, True,
                                                      "Процесс резервного копирования прерван по инициативе пользователя")
                 else:
-                    self.progressbar_set_value_and_color(100, False, 0,
+                    self.progressbar_set_value_and_color(100, False,
                                                          "Процесс резервного копирования ПОЧЕМУ-ТО НЕ ПРЕРВАН")
             else:
-                self.progressbar_set_value_and_color(0, True, 0, "Процесс не запущен, нечего останавливать")
+                self.progressbar_set_value_and_color(0, True, "Процесс не запущен, нечего останавливать")
         except Exception as exc:
-            self.progressbar_set_value_and_color(100, False, 0, f"Непредвиденная ошибка: {exc}")
+            self.progressbar_set_value_and_color(100, False, f"Непредвиденная ошибка: {exc}")
 
 
 if __name__ == '__main__':
