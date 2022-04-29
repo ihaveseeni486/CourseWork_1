@@ -1,5 +1,3 @@
-import time
-
 import YaDisk  # самописно для работы с Я.диском
 import VKwork  # самописно для работы с vk
 from interface_pyqt5 import Ui_MainWindow   # самописно для создания графического интерфейса
@@ -7,6 +5,7 @@ from PyQt5 import QtWidgets, QtCore
 import configparser
 import os
 import sys
+import datetime
 
 
 class ProgressHandler(QtCore.QThread):
@@ -29,16 +28,48 @@ class ProgressHandler(QtCore.QThread):
             self.my_signal.emit(100, False, vk_resp)
             return
 
-        self.my_signal.emit(38, True, "Проверка токена для соединения с Я.диском...")
-        ya = YaDisk.YandexDisk(token=self.token_for_disk)
-        self.my_signal.emit(40, True, "Верификация пройдена")
-        self.my_signal.emit(43, True, "Запуск загрузки файла...")
-        resp = ya.upload_file_to_disk("test", "filemini.txt")
-        if resp == "":
-            self.my_signal.emit(100, True, "Успешно загружен файл на диск")
+        self.my_signal.emit(24, True, "Получение информации о фото из VK...")
+        vk_resp = vk_user_try.get_photos()
+        if "Информация о фото получена" in vk_resp:
+            self.my_signal.emit(26, True, vk_resp)
         else:
-            self.my_signal.emit(100, False, f"Ошибка при загрузке файла на диск:\r"
-                                               f"    {resp}")
+            self.my_signal.emit(100, False, vk_resp)
+            return
+
+        self.my_signal.emit(28, True, "Получение списка альбомов с фото из VK...")
+        vk_resp = vk_user_try.get_albums()
+        if "Список альбомов получен" in vk_resp:
+            self.my_signal.emit(26, True, vk_resp)
+        else:
+            self.my_signal.emit(100, False, vk_resp)
+            return
+
+        self.my_signal.emit(38, True, "Инициализация соединения с Я.диском...")
+        ya = YaDisk.YandexDisk(token=self.token_for_disk)
+        self.my_signal.emit(40, True, "Инициализация пройдена")
+
+        # name_folder_dump_now = datetime.datetime.now().strftime("%Y-%m-%d %H.%M")
+        name_folder_dump_now = datetime.datetime.now().strftime("%Y-%m-%d %H %M")
+
+        all_photo_info = vk_user_try.get_photos()
+        self.my_signal.emit(43, True, "Запуск загрузки файлов....\n[1]Загрузка аватарок...")
+        for item in vk_user_try.photo_info_dict.get("items"):
+            if item["album_id"] == -6:
+                best_to_load = vk_user_try.get_best_photo(item)
+                self.my_signal.emit(43, True, f'    Загрузка аватарки: {best_to_load}')
+                resp = ya.upload_file_to_disk(
+                                                file_path_folder=f"dumpVK/{name_folder_dump_now}/profile",
+                                                file_url=best_to_load,
+                                                file_name=f'{item["likes"]["count"]} {name_folder_dump_now}.jpg'
+                                             )
+                if resp != "":
+                    self.my_signal.emit(43, False, f"      Ошибка при загрузке аватарки на диск (файл пропущен):\r"
+                                                    f"    {resp}")
+
+        self.my_signal.emit(59, True, "[2]Загрузка фото со стены...")
+        self.my_signal.emit(69, True, "[3]Загрузка фото из альбомов...")
+
+        #self.my_signal.emit(100, True, "Загрузка завершена")
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -53,9 +84,6 @@ class MainWindow(QtWidgets.QMainWindow):
         # подключение к кнопкам
         self.ui.pushButton_start_copy.clicked.connect(self.btnClickedStartCopy)
         self.ui.pushButton_stop_copy.clicked.connect(self.btnClickedStopCopy)
-
-        # self.ui.pushButton_start_copy.clicked.connect(lambda: self.handler.start())
-        # self.ui.pushButton_stop_copy.clicked.connect(lambda: self.handler_copy.terminate())
 
         self.ui.fill_settings.clicked.connect(self.fill_settings_pressed)
         self.ui.save_settings.clicked.connect(self.save_settings_pressed)
