@@ -1,3 +1,5 @@
+import time
+import datetime
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
@@ -10,6 +12,7 @@ class YandexDisk:
 
     def get_headers(self):
         return {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'OAuth {}'.format(self.token)
             }
@@ -20,10 +23,7 @@ class YandexDisk:
         resp = requests.get(url_files, headers=headers, verify=False)
         return resp.json()
 
-    def get_upload_link(self, file_path_folder, file_name, file_url=None):
-        headers = self.get_headers()
-        param = {'path': f"{file_path_folder}", 'owerwrite': 'true'}
-
+    def check_and_create_cloud_folders(self, file_path_folder, headers):
         # создадим папки
         url = 'https://cloud-api.yandex.net/v1/disk/resources/'
         folders = file_path_folder.split('/')
@@ -35,6 +35,15 @@ class YandexDisk:
             error = resp.json().get("message")
             if error is not None and "уже существует" not in error:
                 return resp.json()
+        return ""
+
+    def get_upload_link(self, file_path_folder, file_name, file_url=None):
+        headers = self.get_headers()
+
+        # создадим папки
+        checked_folders = self.check_and_create_cloud_folders(file_path_folder, headers)
+        if checked_folders != "":
+            return checked_folders
 
         # получим ссылку на загрузку файла
         url = 'https://cloud-api.yandex.net/v1/disk/resources/upload/'
@@ -43,35 +52,16 @@ class YandexDisk:
         resp = requests.get(url, headers=headers, params=param, verify=False)
         return resp.json()
 
-    def upload_file_to_disk(self, file_path_folder, file_name, file_url=None):
-        ahref_json = ""
-        if isinstance(file_url, str):
-            ahref_json = self.get_upload_link(
-                                                file_path_folder=file_path_folder,
-                                                file_name=file_name,
-                                                file_url=file_url
-                                             )
-        else:
-            ahref_json = self.get_upload_link(
-                                                file_path_folder=file_path_folder,
-                                                file_name=file_name
-                                             )
+    def upload_file_to_disk_from_local(self, file_path_folder, file_name):
+        # для загрузки файла из локального пути
+        ahref_json = self.get_upload_link(
+            file_path_folder=file_path_folder,
+            file_name=file_name
+        )
 
         ahref = ahref_json.get("href")
         if ahref != 0 and ahref is not None:
-            if isinstance(file_url, str):
-                try:
-                    headers = self.get_headers()
-                    params = {
-                              'path': f'{ahref}',
-                              'url': f'{file_url}',
-                              'owerwrite': 'true'
-                              }
-                    resp = requests.put(headers=headers, params=params, url=ahref, verify=False)
-                except Exception as exex:
-                    return exex["message"]
-            else:
-                resp = requests.put(url=ahref, data=open(file_name, 'rb'), verify=False)
+            resp = requests.put(url=ahref, data=open(file_name, 'rb'), verify=False)
             resp.raise_for_status()
             if resp.status_code == 201:
                 return ""
@@ -79,5 +69,55 @@ class YandexDisk:
                 return f"{resp.status_code}: {resp.reason}"
         else:
             return f'{ahref_json.get("message")}'
+
+    def check_file_name(self, file_path_folder, file_name, headers):
+        url = 'https://cloud-api.yandex.net/v1/disk/resources/'
+        all_path = f"{file_path_folder}/{file_name}.jpg"
+        param = {'path': all_path}
+        resp = requests.get(url=url, headers=headers, params=param, verify=False)
+        if resp.status_code == 404:  # файл по пути с таким именем не найден
+            return False
+        else:
+            return True
+
+    def upload_file_to_disk(self, file_path_folder, file_name, file_url=None):
+        # для загрузки файлов по url
+        headers = self.get_headers()
+
+        # проверим (и создадим) папки
+        checked_folders = self.check_and_create_cloud_folders(file_path_folder, headers)
+        if checked_folders != "":
+            return checked_folders
+
+        # проверим, есть ли уже файлы с таким именем по пути
+        checked_name = self.check_file_name(file_path_folder, file_name, headers)
+        if checked_name:
+            name_folder_dump_now = datetime.datetime.now().strftime("%Y-%m-%d %H.%M")
+            file_name = f'{file_name} {name_folder_dump_now}.jpg'
+        else:
+            file_name = f'{file_name}.jpg'
+
+        # post
+        url = 'https://cloud-api.yandex.net/v1/disk/resources/upload/'
+        all_path = f"{file_path_folder}/{file_name}"
+        param = {'path': all_path,
+                 # 'owerwrite': 'true',
+                 'replace': 'true',
+                 'url': file_url
+                 }
+        resp = requests.post(url=url, headers=headers, params=param, verify=False)
+        # resp.raise_for_status()
+        if resp.status_code == 201 or resp.status_code == 202:
+            # запрос принят сервером, нужно проверить статус операции
+            time.sleep(1)
+            url_operation_id = resp.json().get("href")
+            resp = requests.get(url=url_operation_id, headers=headers, verify=False)
+            status_oper = resp.json().get("status")
+            if status_oper == "success" or status_oper == "in-progress":
+                return ""
+            else:
+                return f"Статус асинхронной операции: {status_oper}"
+        else:
+            return f"{resp.status_code}: {resp.reason}"
 
 

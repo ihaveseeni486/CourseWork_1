@@ -156,6 +156,9 @@ color: white;
     <property name="readOnly">
      <bool>true</bool>
     </property>
+    <property name="textInteractionFlags">
+     <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+    </property>
    </widget>
    <widget class="QFrame" name="frame">
     <property name="geometry">
@@ -242,6 +245,9 @@ background-color: rgb(68,56,72);
        <height>24</height>
       </rect>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="toolTip">
       <string>Загрузить сохраненные настройки</string>
      </property>
@@ -282,6 +288,9 @@ background-color: rgb(160, 95, 182)
        <height>24</height>
       </rect>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="toolTip">
       <string>Сохранить введенные настройки</string>
      </property>
@@ -318,6 +327,9 @@ background-color: rgb(160, 95, 182)
        <width>24</width>
        <height>24</height>
       </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Очистить поля и очистить сохраненные настройки&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -464,6 +476,148 @@ background-color: rgb(255, 0, 110);
      </property>
      <property name="text">
       <string>Остановка резервного копирования</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="check_box_profile">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>130</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QCheckBox
+{
+border : 2px solid rgb(160, 95, 182);
+}
+QCheckBox::indicator
+{
+border : 2px solid rgb(160, 95, 182);
+width : 20px;
+height : 20px;
+border-radius :12px;
+image: url(:/icons/icons/radio_button_unchecked_FILL0_wght400_GRAD200_opsz24.svg);
+}
+QCheckBox::indicator:checked
+{
+border : 2px solid rgb(160, 95, 182);
+width : 20px;
+height : 20px;
+border-radius :12px;
+background-color: rgb(160, 95, 182);
+image: url(:/icons/icons/check_circle_FILL0_wght400_GRAD200_opsz24.svg);
+}</string>
+     </property>
+     <property name="text">
+      <string>аватары</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>130</y>
+       <width>61</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Загрузка:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="check_box_wall">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>130</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QCheckBox
+{
+border : 2px solid rgb(160, 95, 182);
+}
+QCheckBox::indicator
+{
+border : 2px solid rgb(160, 95, 182);
+width : 20px;
+height : 20px;
+border-radius :12px;
+image: url(:/icons/icons/radio_button_unchecked_FILL0_wght400_GRAD200_opsz24.svg);
+}
+QCheckBox::indicator:checked
+{
+border : 2px solid rgb(160, 95, 182);
+width : 20px;
+height : 20px;
+border-radius :12px;
+background-color: rgb(160, 95, 182);
+image: url(:/icons/icons/check_circle_FILL0_wght400_GRAD200_opsz24.svg);
+}</string>
+     </property>
+     <property name="text">
+      <string>стены</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="check_box_album">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>130</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QCheckBox
+{
+border : 2px solid rgb(160, 95, 182);
+}
+QCheckBox::indicator
+{
+border : 2px solid rgb(160, 95, 182);
+width : 20px;
+height : 20px;
+border-radius :12px;
+image: url(:/icons/icons/radio_button_unchecked_FILL0_wght400_GRAD200_opsz24.svg);
+}
+QCheckBox::indicator:checked
+{
+border : 2px solid rgb(160, 95, 182);
+width : 20px;
+height : 20px;
+border-radius :12px;
+background-color: rgb(160, 95, 182);
+image: url(:/icons/icons/check_circle_FILL0_wght400_GRAD200_opsz24.svg);
+}</string>
+     </property>
+     <property name="text">
+      <string>альбомов</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="tristate">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>

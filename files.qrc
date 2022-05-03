@@ -3,9 +3,11 @@
     <file>icons/add_task_FILL0_wght400_GRAD200_opsz24.svg</file>
     <file>icons/arrow_circle_right_FILL0_wght400_GRAD200_opsz24.svg</file>
     <file>icons/cancel_FILL0_wght400_GRAD200_opsz24.svg</file>
+    <file>icons/check_circle_FILL0_wght400_GRAD200_opsz24.svg</file>
     <file>icons/delete_FILL0_wght400_GRAD200_opsz24.svg</file>
     <file>icons/do_not_disturb_on_FILL0_wght400_GRAD200_opsz24.svg</file>
-    <file>icons/settings_FILL0_wght400_GRAD200_opsz24.svg</file>
     <file>icons/file_download_FILL0_wght400_GRAD200_opsz24.svg</file>
+    <file>icons/radio_button_unchecked_FILL0_wght400_GRAD200_opsz24.svg</file>
+    <file>icons/settings_FILL0_wght400_GRAD200_opsz24.svg</file>
   </qresource>
 </RCC>
