@@ -8,6 +8,7 @@ import configparser
 import os
 import sys
 import datetime
+import json
 
 
 class ProgressHandler(QtCore.QThread):
@@ -55,6 +56,11 @@ class ProgressHandler(QtCore.QThread):
         ya = YaDisk.YandexDisk(token=self.token_for_disk)
         self.my_signal.emit(14, True, "Инициализация пройдена")
         progress_show = 15
+        json_to_print = json.dumps(vk_user_try.photo_info_dict, sort_keys=True, indent=6)
+        self.my_signal.emit(15, True,
+                            f'_______________json photos_______________'
+                            f'\n{json_to_print}'
+                            f'_________________________________________')
         name_folder_dump_now = datetime.datetime.now().strftime("%Y-%m-%d %H.%M")
         if self.check_box_profile:
             self.my_signal.emit(15, True, "\nЗапуск загрузки файлов....\n\n[*]Загрузка аватарок...")

@@ -19,16 +19,16 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QLabel,
     QLineEdit, QMainWindow, QProgressBar, QPushButton,
     QSizePolicy, QTabWidget, QTextEdit, QToolButton,
-    QWidget)
+    QVBoxLayout, QWidget)
 import files_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(530, 467)
-        MainWindow.setMinimumSize(QSize(530, 467))
-        MainWindow.setMaximumSize(QSize(530, 467))
+        MainWindow.resize(530, 559)
+        MainWindow.setMinimumSize(QSize(530, 559))
+        MainWindow.setMaximumSize(QSize(16777215, 16777215))
         icon = QIcon()
         icon.addFile(u":/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg", QSize(), QIcon.Normal, QIcon.Off)
         icon.addFile(u":/icons/icons/file_download_FILL0_wght400_GRAD200_opsz24.svg", QSize(), QIcon.Normal, QIcon.On)
@@ -51,6 +51,8 @@ class Ui_MainWindow(object):
 "}")
         MainWindow.setDocumentMode(False)
         MainWindow.setTabShape(QTabWidget.Rounded)
+        MainWindow.setDockNestingEnabled(False)
+        MainWindow.setDockOptions(QMainWindow.AllowTabbedDocks|QMainWindow.AnimatedDocks)
         self.menu_exit = QAction(MainWindow)
         self.menu_exit.setObjectName(u"menu_exit")
         self.menu_exit.setMenuRole(QAction.QuitRole)
@@ -64,55 +66,17 @@ class Ui_MainWindow(object):
         self.menu_fill_settings.setMenuRole(QAction.ApplicationSpecificRole)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
+        self.centralwidget.setTabletTracking(True)
+        self.centralwidget.setAutoFillBackground(False)
         self.centralwidget.setStyleSheet(u"QWidget{\n"
 "border-radius: 10px;\n"
 "background-color: rgb(53, 0, 39);\n"
 "}")
-        self.progressBar = QProgressBar(self.centralwidget)
-        self.progressBar.setObjectName(u"progressBar")
-        self.progressBar.setGeometry(QRect(30, 240, 471, 23))
-        self.progressBar.setToolTipDuration(-1)
-        self.progressBar.setLayoutDirection(Qt.LeftToRight)
-        self.progressBar.setStyleSheet(u"QProgressBar{\n"
-"background_color: rgb(124,113,116);\n"
-"border-radius: 10px;\n"
-"color: white;\n"
-"}\n"
-"QProgressBar::chunk{\n"
-"	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(201, 87, 149, 255), stop:1 rgba(179, 65, 244, 255));\n"
-"border-radius: 10px;\n"
-"}")
-        self.progressBar.setValue(0)
-        self.progressBar.setAlignment(Qt.AlignCenter)
-        self.lineEdit_page_id = QLineEdit(self.centralwidget)
-        self.lineEdit_page_id.setObjectName(u"lineEdit_page_id")
-        self.lineEdit_page_id.setGeometry(QRect(220, 40, 281, 22))
-        font = QFont()
-        font.setKerning(True)
-        self.lineEdit_page_id.setFont(font)
-        self.lineEdit_page_id.setTabletTracking(True)
-        self.lineEdit_page_id.setStyleSheet(u"QLineEdit{\n"
-"border-radius: 10px;\n"
-"color: white;\n"
-"}")
-        self.lineEdit_page_id.setFrame(True)
-        self.lineEdit_page_id.setCursorPosition(0)
-        self.lineEdit_page_id.setAlignment(Qt.AlignCenter)
-        self.lineEdit_page_id.setClearButtonEnabled(True)
-        self.textEdit_report = QTextEdit(self.centralwidget)
-        self.textEdit_report.setObjectName(u"textEdit_report")
-        self.textEdit_report.setGeometry(QRect(30, 300, 471, 141))
-        self.textEdit_report.setStyleSheet(u"QTextEdit{\n"
-"border-radius: 10px;\n"
-"color: white;\n"
-"}")
-        self.textEdit_report.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.textEdit_report.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.textEdit_report.setReadOnly(True)
-        self.textEdit_report.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
+        self.verticalLayout = QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName(u"verticalLayout")
         self.frame = QFrame(self.centralwidget)
         self.frame.setObjectName(u"frame")
-        self.frame.setGeometry(QRect(0, 0, 531, 471))
+        self.frame.setMinimumSize(QSize(0, 0))
         self.frame.setStyleSheet(u"QFrame{\n"
 "border-radius: 10px;\n"
 "background-color: rgb(68,56,72);\n"
@@ -125,10 +89,10 @@ class Ui_MainWindow(object):
         self.label.setTextFormat(Qt.AutoText)
         self.label_2 = QLabel(self.frame)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(30, 40, 131, 16))
+        self.label_2.setGeometry(QRect(20, 40, 131, 16))
         self.label_3 = QLabel(self.frame)
         self.label_3.setObjectName(u"label_3")
-        self.label_3.setGeometry(QRect(30, 100, 171, 16))
+        self.label_3.setGeometry(QRect(20, 100, 171, 16))
         self.label_4 = QLabel(self.frame)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setGeometry(QRect(30, 270, 101, 20))
@@ -170,10 +134,10 @@ class Ui_MainWindow(object):
         self.clear_settings.setIconSize(QSize(24, 24))
         self.label_5 = QLabel(self.frame)
         self.label_5.setObjectName(u"label_5")
-        self.label_5.setGeometry(QRect(30, 70, 181, 16))
+        self.label_5.setGeometry(QRect(20, 70, 181, 16))
         self.lineEdit_token_id = QLineEdit(self.frame)
         self.lineEdit_token_id.setObjectName(u"lineEdit_token_id")
-        self.lineEdit_token_id.setGeometry(QRect(220, 70, 281, 22))
+        self.lineEdit_token_id.setGeometry(QRect(210, 70, 281, 22))
         self.lineEdit_token_id.setStyleSheet(u"QLineEdit{\n"
 "border-radius: 10px;\n"
 "color: white;\n"
@@ -184,7 +148,7 @@ class Ui_MainWindow(object):
         self.lineEdit_token_id.setClearButtonEnabled(True)
         self.lineEdit_token = QLineEdit(self.frame)
         self.lineEdit_token.setObjectName(u"lineEdit_token")
-        self.lineEdit_token.setGeometry(QRect(220, 100, 281, 22))
+        self.lineEdit_token.setGeometry(QRect(210, 100, 281, 22))
         self.lineEdit_token.setStyleSheet(u"QLineEdit{\n"
 "border-radius: 10px;\n"
 "color: white;\n"
@@ -195,7 +159,7 @@ class Ui_MainWindow(object):
         self.lineEdit_token.setClearButtonEnabled(True)
         self.pushButton_start_copy = QPushButton(self.frame)
         self.pushButton_start_copy.setObjectName(u"pushButton_start_copy")
-        self.pushButton_start_copy.setGeometry(QRect(30, 160, 471, 28))
+        self.pushButton_start_copy.setGeometry(QRect(20, 160, 471, 28))
         self.pushButton_start_copy.setCursor(QCursor(Qt.PointingHandCursor))
         self.pushButton_start_copy.setStyleSheet(u"QPushButton{\n"
 "border-radius: 10px;\n"
@@ -203,7 +167,7 @@ class Ui_MainWindow(object):
 "}")
         self.pushButton_stop_copy = QPushButton(self.frame)
         self.pushButton_stop_copy.setObjectName(u"pushButton_stop_copy")
-        self.pushButton_stop_copy.setGeometry(QRect(30, 200, 471, 28))
+        self.pushButton_stop_copy.setGeometry(QRect(20, 200, 471, 28))
         self.pushButton_stop_copy.setCursor(QCursor(Qt.PointingHandCursor))
         self.pushButton_stop_copy.setStyleSheet(u"QPushButton{\n"
 "border-radius: 10px;\n"
@@ -237,7 +201,7 @@ class Ui_MainWindow(object):
         self.check_box_profile.setChecked(True)
         self.label_6 = QLabel(self.frame)
         self.label_6.setObjectName(u"label_6")
-        self.label_6.setGeometry(QRect(30, 130, 61, 16))
+        self.label_6.setGeometry(QRect(20, 130, 61, 16))
         self.check_box_wall = QCheckBox(self.frame)
         self.check_box_wall.setObjectName(u"check_box_wall")
         self.check_box_wall.setGeometry(QRect(200, 130, 91, 20))
@@ -291,11 +255,58 @@ class Ui_MainWindow(object):
 "}")
         self.check_box_album.setChecked(True)
         self.check_box_album.setTristate(False)
+        self.lineEdit_page_id = QLineEdit(self.frame)
+        self.lineEdit_page_id.setObjectName(u"lineEdit_page_id")
+        self.lineEdit_page_id.setGeometry(QRect(210, 40, 281, 22))
+        font = QFont()
+        font.setKerning(True)
+        self.lineEdit_page_id.setFont(font)
+        self.lineEdit_page_id.setTabletTracking(True)
+        self.lineEdit_page_id.setStyleSheet(u"QLineEdit{\n"
+"border-radius: 10px;\n"
+"color: white;\n"
+"}")
+        self.lineEdit_page_id.setFrame(True)
+        self.lineEdit_page_id.setCursorPosition(0)
+        self.lineEdit_page_id.setAlignment(Qt.AlignCenter)
+        self.lineEdit_page_id.setClearButtonEnabled(True)
+        self.progressBar = QProgressBar(self.frame)
+        self.progressBar.setObjectName(u"progressBar")
+        self.progressBar.setGeometry(QRect(20, 240, 471, 24))
+        self.progressBar.setToolTipDuration(-1)
+        self.progressBar.setLayoutDirection(Qt.LeftToRight)
+        self.progressBar.setStyleSheet(u"QProgressBar{\n"
+"background_color: rgb(124,113,116);\n"
+"border-radius: 10px;\n"
+"color: white;\n"
+"}\n"
+"QProgressBar::chunk{\n"
+"	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(201, 87, 149, 255), stop:1 rgba(179, 65, 244, 255));\n"
+"border-radius: 10px;\n"
+"}")
+        self.progressBar.setValue(0)
+        self.progressBar.setAlignment(Qt.AlignCenter)
+        self.textEdit_report = QTextEdit(self.frame)
+        self.textEdit_report.setObjectName(u"textEdit_report")
+        self.textEdit_report.setGeometry(QRect(20, 300, 471, 221))
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textEdit_report.sizePolicy().hasHeightForWidth())
+        self.textEdit_report.setSizePolicy(sizePolicy)
+        self.textEdit_report.setStyleSheet(u"QTextEdit{\n"
+"border-radius: 10px;\n"
+"color: white;\n"
+"background-color: rgb(52, 0, 39);\n"
+"}")
+        self.textEdit_report.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.textEdit_report.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.textEdit_report.setReadOnly(True)
+        self.textEdit_report.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
+
+        self.verticalLayout.addWidget(self.frame)
+
         MainWindow.setCentralWidget(self.centralwidget)
-        self.frame.raise_()
-        self.progressBar.raise_()
-        self.lineEdit_page_id.raise_()
-        self.textEdit_report.raise_()
 
         self.retranslateUi(MainWindow)
 
