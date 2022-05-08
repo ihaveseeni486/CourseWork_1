@@ -1,7 +1,9 @@
 import YaDisk  # самописно для работы с Я.диском
 import VKwork  # самописно для работы с vk
 from interface_pyqt5 import Ui_MainWindow   # самописно для создания графического интерфейса
-from PyQt5 import QtWidgets, QtCore
+# from PyQt5 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore
+import PySide6
 import configparser
 import os
 import sys
@@ -9,7 +11,8 @@ import datetime
 
 
 class ProgressHandler(QtCore.QThread):
-    my_signal = QtCore.pyqtSignal(int, bool, str)
+    # my_signal = QtCore.pyqtSignal(int, bool, str)
+    my_signal = QtCore.Signal(int, bool, str)
 
     def __init__(self, page_id=None, token_id=None, token_for_disk=None,
                  check_box_profile=None, check_box_wall=None, check_box_album=None):
@@ -328,6 +331,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
 if __name__ == '__main__':
+    qt_path = os.path.dirname(PySide6.__file__)
+    # os.environ['QT_PLUGIN_PATH'] = os.path.join(qt_path, "Qt/plugins")
+    os.environ['QT_PLUGIN_PATH'] = os.path.join(qt_path, "plugins")
 
     app = QtWidgets.QApplication([])
     application = MainWindow()
